@@ -44,6 +44,7 @@ Inicialización del diccionario y preparándolo con las entradas para los usuari
 '''
 allInfo = {}
 allMessages = connect_to_mongodb.get_document_mdb("botMessages", "Spanish")
+helpMessages = connect_to_mongodb.get_document_mdb("help", "Spanish")
 defaultOptions = [allMessages["name"], allMessages["age"], allMessages["email"], allMessages["phone"], allMessages["language"], allMessages["access"]]
 
 editingtOptions = [allMessages["name"], allMessages["age"], allMessages["email"], allMessages["phone"], allMessages["language"], allMessages["save"]]
@@ -715,6 +716,17 @@ def default(update, context):
 				if not "userInfo" in allInfo[id1] or len(allInfo[id1]["userInfo"]) == 0:
 					result = loadAccount(id1)
 					establishConf(allInfo[id1], result)
+
+				if text.__eq__("ayuda") or text.__eq__("help") or text.__eq__("ajuda"):
+					esperanza = helpMessages["numeroEsperanza"]
+					descripcionEsperanza = helpMessages["descripciónEsperanza"]
+					emergencias = helpMessages["numeroEmergencias"]
+					descripcionEmergencias = helpMessages["descripciónEmergencias"]
+					saludMental = helpMessages["numeroSaludMental"]
+					descripcionSaludMental = helpMessages["descripciónSaludMental"]
+					message = allMessages["help"]
+					reply_kb_markup = ""
+					context.bot.send_message(chat_id=update.effective_chat.id, text=message + "\n\n" + descripcionEsperanza + "\n\n" + esperanza + "\n\n" + descripcionEmergencias + "\n\n" + emergencias + "\n\n" + descripcionSaludMental + "\n\n" + saludMental, reply_markup=reply_kb_markup)
 
 				elif "feeling" in allInfo[id1]:
 					print("A")
